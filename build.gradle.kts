@@ -2,10 +2,11 @@ plugins {
     java
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("me.champeau.jmh") version "0.6.6"
+    `maven-publish`
 }
 
 group = "com.github.darrmirr"
-version = "1.0-SNAPSHOT"
+version = project.property("project.version")!!
 
 repositories {
     // Apache Calcite dependency with modifications for library needs
@@ -49,7 +50,7 @@ tasks.jar {
         attributes(mapOf("Implementation-Title" to project.name,
                          "Implementation-Version" to project.version,
                          "Implementation-URL" to project.property("project.url"),
-                         "Implementation-Vendor" to project.property("project.creator")))
+                         "Implementation-Vendor" to project.property("project.developers")))
     }
     finalizedBy ( tasks.shadowJar )
 }
@@ -61,12 +62,26 @@ tasks {
             attributes(mapOf("Implementation-Title" to project.name,
                              "Implementation-Version" to project.version,
                              "Implementation-URL" to project.property("project.url"),
-                             "Implementation-Vendor" to project.property("project.creator")))
+                             "Implementation-Vendor" to project.property("project.developers")))
         }
     }
 }
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
     withJavadocJar()
     withSourcesJar()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = project.property("group").toString()
+            artifactId = project.name
+            version = project.property("project.version").toString()
+
+            from(components["java"])
+        }
+    }
 }

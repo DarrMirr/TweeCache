@@ -36,7 +36,7 @@ String sqlQuery = "select emp.* from cache.employee emp " +
 List<Employee> employeeList = tweeCache.query(sqlQuery, singletonMap("dep_name", "IT department"), employeeRowMapper());
 ```
 
-See more usage examples at `com.github.darrmirr.tweecache.TweeCacheTest` class
+See more usage examples at [com.github.darrmirr.tweecache.TweeCacheTest](https://github.com/DarrMirr/TweeCache/blob/main/src/test/java/com/github/darrmirr/tweecache/TweeCacheTest.java) class
 
 ### Minimum requirements:
 
@@ -45,7 +45,7 @@ See more usage examples at `com.github.darrmirr.tweecache.TweeCacheTest` class
 
 *Development:*
 - JDK 8
-- Gradle 6
+- Gradle 7
 
 ### TweeCache under hood
 
