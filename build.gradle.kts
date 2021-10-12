@@ -1,5 +1,5 @@
 plugins {
-    java
+    `java-library`
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("me.champeau.jmh") version "0.6.6"
     `maven-publish`
@@ -17,20 +17,20 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine
-    implementation("com.github.ben-manes.caffeine:caffeine:2.8.8")
+    api("com.github.ben-manes.caffeine:caffeine:2.8.8")
     // https://mvnrepository.com/artifact/org.jdbi/jdbi3-core
-    implementation("org.jdbi:jdbi3-core:3.18.1") {
+    api("org.jdbi:jdbi3-core:3.18.1") {
         // exclude com.github.ben-manes.caffeine:caffeine:2.8.0 due to add manually last patched 2.8.8 version
         exclude(group="com.github.ben-manes", module="caffeine")
     }
     // https://mvnrepository.com/artifact/org.codehaus.janino/janino
-    implementation("org.codehaus.janino:janino:3.1.6")
+    api("org.codehaus.janino:janino:3.1.6")
     // https://mvnrepository.com/artifact/org.apache.calcite/calcite-core
     implementation("org.apache.calcite:calcite-core:1.28.0-snapshot")
     // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
-    implementation("com.zaxxer:HikariCP:4.0.3")
+    api("com.zaxxer:HikariCP:4.0.3")
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-    implementation("org.slf4j:slf4j-api:1.7.32")
+    api("org.slf4j:slf4j-api:1.7.32")
 
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
@@ -52,10 +52,17 @@ tasks.jar {
                          "Implementation-URL" to project.property("project.url"),
                          "Implementation-Vendor" to project.property("project.developers")))
     }
+    from({
+        // Include Apache Calcite dependency with modifications for library needs
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("calcite-core-1.28.0-snapshot.jar") }.map { zipTree(it) }
+    })
     finalizedBy ( tasks.shadowJar )
 }
 
-// task to build fat jar (jar with dependencies)
+/**
+ * task to build uber jar (jar with dependencies)
+ * alternative to https://docs.gradle.org/current/userguide/working_with_files.html#sec:creating_uber_jar_example
+ */
 tasks {
     shadowJar {
         manifest {
@@ -76,7 +83,7 @@ java {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
+        create<MavenPublication>(project.name) {
             groupId = project.property("group").toString()
             artifactId = project.name
             version = project.property("project.version").toString()

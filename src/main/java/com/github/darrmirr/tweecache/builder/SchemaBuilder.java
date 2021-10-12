@@ -153,7 +153,7 @@ public class SchemaBuilder {
      *
      * @param functionName function name that should be used at SQL-query as stored procedure
      * @param methodClass class that store function's implementation method
-     * @param methodName method name that should be invoked if {@param functionName} is met at SQL-query
+     * @param methodName method name that should be invoked if  functionName is met at SQL-query
      * @return this {@link SchemaBuilder} instance
      */
     public SchemaBuilder addFunction(String functionName, Class<?> methodClass, String methodName) {

@@ -285,7 +285,7 @@ public class TweeCache {
     /**
      * Get cache statistics from underlined cache implementation
      *
-     * @param tableClass table name
+     * @param tableName table name
      * @return cache statistics
      */
     public Optional<CacheStats> stats(String tableName) {
