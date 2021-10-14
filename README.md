@@ -2,6 +2,24 @@
 In-memory cache with SQL-query capability
 ***
 
+### Installation
+
+**Gradle**
+
+1. Download jar file with dependencies (-all suffix at file name) and put it to some directory, for example, at `${project.root.dir}/libs`
+2. Add dependency to your project: 
+```kotlin
+ repositories {
+     flatDir {
+         dirs('libs')
+     }
+ }
+
+ dependencies {
+     implementation 'com.github.darrmirr:tweecache:1.0.0:all'
+ }   
+```
+
 ### Usage
 
 There are 3 simple steps to start using TweeCache:

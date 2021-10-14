@@ -26,7 +26,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.codehaus.janino/janino
     api("org.codehaus.janino:janino:3.1.6")
     // https://mvnrepository.com/artifact/org.apache.calcite/calcite-core
-    implementation("org.apache.calcite:calcite-core:1.28.0-snapshot")
+    api("org.apache.calcite:calcite-core:1.28.0-snapshot")
     // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
     api("com.zaxxer:HikariCP:4.0.3")
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
@@ -52,10 +52,6 @@ tasks.jar {
                          "Implementation-URL" to project.property("project.url"),
                          "Implementation-Vendor" to project.property("project.developers")))
     }
-    from({
-        // Include Apache Calcite dependency with modifications for library needs
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("calcite-core-1.28.0-snapshot.jar") }.map { zipTree(it) }
-    })
     finalizedBy ( tasks.shadowJar )
 }
 
